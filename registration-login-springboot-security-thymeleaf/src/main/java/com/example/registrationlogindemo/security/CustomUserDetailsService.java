@@ -1,6 +1,6 @@
 package com.example.registrationlogindemo.security;
 
-import com.example.registrationlogindemo.entity.Role;
+import com.example.registrationlogindemo.entity.Project;
 import com.example.registrationlogindemo.entity.User;
 import com.example.registrationlogindemo.repository.UserRepository;
 import org.springframework.security.core.GrantedAuthority;
@@ -23,23 +23,22 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(email);
-
+    public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
+        User user = userRepository.findByUsername(userName);
+//        return null;
         if (user != null) {
-            return new org.springframework.security.core.userdetails.User(user.getEmail(),
+            return new org.springframework.security.core.userdetails.User(user.getUsername(),
                     user.getPassword(),
-                    mapRolesToAuthorities(user.getRoles()));
+                    mapRolesToAuthorities(user.getProjects()));
         }else{
             throw new UsernameNotFoundException("Invalid username or password.");
         }
     }
 
-    private Collection < ? extends GrantedAuthority> mapRolesToAuthorities(Collection <Role> roles) {
-        Collection < ? extends GrantedAuthority> mapRoles = roles.stream()
-                .map(role -> new SimpleGrantedAuthority(role.getName()))
+    private Collection < ? extends GrantedAuthority> mapRolesToAuthorities(Collection <Project> projects) {
+        return projects.stream()
+                .map(project -> new SimpleGrantedAuthority(project.getProjectName()))
                 .collect(Collectors.toList());
-        return mapRoles;
     }
 }
 

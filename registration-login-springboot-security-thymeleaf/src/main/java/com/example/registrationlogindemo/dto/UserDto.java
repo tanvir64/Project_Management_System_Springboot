@@ -1,7 +1,7 @@
 package com.example.registrationlogindemo.dto;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotEmpty;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,6 +19,8 @@ public class UserDto
     @NotEmpty
     private String lastName;
     @NotEmpty(message = "Email should not be empty")
+    @NotEmpty
+    private String userName;
     @Email
     private String email;
     @NotEmpty(message = "Password should not be empty")
