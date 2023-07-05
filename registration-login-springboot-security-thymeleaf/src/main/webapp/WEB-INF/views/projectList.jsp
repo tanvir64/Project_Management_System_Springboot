@@ -159,6 +159,26 @@
             background-color: blue;
         }
 
+        .logout-button {
+            display: inline-block;
+            background-color: red;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            text-decoration: none;
+        }
+
+        .logout-button:hover {
+            background-color: darkred;
+        }
+
+        .logout-container {
+            margin-left: auto;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
     </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/smoothness/jquery-ui.css">
@@ -221,6 +241,9 @@
 </div>
 <div class="create-project-container">
     <a href="/api/v1/create-project" class="create-project-button">Create Project</a>
+</div>
+<div class="logout-container">
+    <a href="/api/v1/logout" class="logout-button">Logout</a>
 </div>
 <form action="/api/v1/projectsList/filter" method="GET">
     <div class="datepicker-container">

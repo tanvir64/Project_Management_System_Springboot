@@ -3,6 +3,7 @@ package com.example.registrationlogindemo.controller;
 import com.example.registrationlogindemo.dto.ProjectDTO;
 import com.example.registrationlogindemo.entity.Project;
 import com.example.registrationlogindemo.entity.User;
+import com.example.registrationlogindemo.exception.RecordNotFoundException;
 import com.example.registrationlogindemo.service.ProjectService;
 import com.example.registrationlogindemo.service.ReportService;
 import com.example.registrationlogindemo.service.UserService;
@@ -49,7 +50,7 @@ public class ProjectController {
             projectDTO.setProjectStatus(project.getProjectStatus());
             projectDTO.setProjectStartDateTime(project.getProjectStartDateTime());
             projectDTO.setProjectEndDateTime(project.getProjectEndDateTime());
-            projectDTO.setProjectOwnerName(project.getProjectOwner().getUsername());
+            projectDTO.setProjectOwnerName("Tanvir");
             projectDTOs.add(projectDTO);
         }
         return projectDTOs;
@@ -119,7 +120,7 @@ public class ProjectController {
         projectService.addMemberToProject(project,selectedMemberIds);
         project.setProjectOwner(user);
         projectService.createProject(project);
-        model.addAttribute("projects", projectService.getAllProjects());
+//        model.addAttribute("projects", projectService.getAllProjects());
         return "redirect:/api/v1/projectsList";
     }
 
@@ -136,7 +137,7 @@ public class ProjectController {
     }
 
     @PostMapping("/api/v1/projects/edit/{id}")
-    public String editProject(@PathVariable("id") Long id, @ModelAttribute("project") Project project,Model model,@RequestParam(value = "assignMembers",required = false) List<Long> selectedMemberIds) {
+    public String editProject(@PathVariable("id") Long id, @ModelAttribute("project") Project project,Model model,@RequestParam(value = "assignMembers",required = false) List<Long> selectedMemberIds) throws RecordNotFoundException {
         LocalDate current_date = LocalDate.now();
         if(project.getProjectStartDateTime().isAfter(current_date)){
             project.setProjectStatus(0);
@@ -147,14 +148,13 @@ public class ProjectController {
         else{
             project.setProjectStatus(1);
         }
-        projectService.updateProject(project,selectedMemberIds);
-        model.addAttribute("projects", projectService.getAllProjects());
-        return "projectList";
+        projectService.updateProject(id,project,selectedMemberIds);
+//        model.addAttribute("projects", projectService.getAllProjects());
+        return "redirect:/api/v1/projectsList";
     }
 
     @GetMapping("/api/v1/projects/delete/{id}")
     public String deleteProject(@PathVariable("id") Long id, Model model) {
-//        ask for confirmation before deleting a project
         Project project = projectService.getProjectById(id);
         model.addAttribute("project", project);
         model.addAttribute("membersList", project.getUsers());
@@ -164,8 +164,8 @@ public class ProjectController {
     @PostMapping("/api/v1/projects/delete/{id}")
     public String deleteProject(@PathVariable("id") Long id, @ModelAttribute("project") Project project, Model model) {
         projectService.deleteProject(id);
-        model.addAttribute("projects", projectService.getAllProjects());
-        return "projectList";
+//        model.addAttribute("projects", projectService.getAllProjects());
+        return "redirect:/api/v1/projectsList";
     }
 
 //        function for generating jasper report

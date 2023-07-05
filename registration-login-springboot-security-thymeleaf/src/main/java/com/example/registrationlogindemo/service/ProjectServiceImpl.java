@@ -53,11 +53,16 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public void updateProject(Project project, List<Long> selectedMemberIds){
-        if(selectedMemberIds == null){
-            return;
-        }
-        addMemberToProject(project, selectedMemberIds);
+    public void updateProject(Long id, Project project, List<Long> selectedMemberIds) throws RecordNotFoundException {
+        Project projectToUpdate = projectRepository.findById(id)
+                .orElseThrow(() -> new RecordNotFoundException("Project not found"));
+        projectToUpdate.setProjectName(project.getProjectName());
+        projectToUpdate.setProjectIntro(project.getProjectIntro());
+        projectToUpdate.setProjectStartDateTime(project.getProjectStartDateTime());
+        projectToUpdate.setProjectEndDateTime(project.getProjectEndDateTime());
+        projectToUpdate.setProjectStatus(project.getProjectStatus());
+        projectToUpdate.setProjectOwner(project.getProjectOwner());
+        addMemberToProject(projectToUpdate, selectedMemberIds);
         projectRepository.save(project);
     }
 
@@ -77,6 +82,8 @@ public class ProjectServiceImpl implements ProjectService {
     public void deleteProject(Long id) {
         Project projectToDelete = projectRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Project not found"));
+        List<User> projectUsers = projectToDelete.getUsers();
+        projectUsers.forEach(user -> user.getProjects().remove(projectToDelete));
         projectRepository.delete(projectToDelete);
     }
 

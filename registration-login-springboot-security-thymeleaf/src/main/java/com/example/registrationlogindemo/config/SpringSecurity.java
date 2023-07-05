@@ -56,12 +56,15 @@ public class SpringSecurity {
 //                                response.sendRedirect("/api/v1/default");
 //                            }
 //                        })
-                        .failureUrl("/api/v1/login?error=true")
                 )
                 .logout(
                         logout -> logout
+                                .invalidateHttpSession(true)
+                                .clearAuthentication(true)
                                 .logoutRequestMatcher(new AntPathRequestMatcher("/api/v1/logout"))
+                                .logoutSuccessUrl("/api/v1/login")
                                 .permitAll()
+
                 );
         return http.build();
     }

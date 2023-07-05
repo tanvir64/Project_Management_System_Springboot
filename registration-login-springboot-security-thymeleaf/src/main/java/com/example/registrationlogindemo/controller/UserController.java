@@ -123,8 +123,7 @@ public class UserController {
     }
 
     @GetMapping("/api/v1/logout")
-    public String logout(HttpSession session) {
-        session.invalidate();
+    public String logout() {
         return "redirect:/api/v1/login";
     }
 }

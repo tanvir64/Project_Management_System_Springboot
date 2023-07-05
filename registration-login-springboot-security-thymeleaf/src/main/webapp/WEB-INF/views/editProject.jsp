@@ -77,6 +77,19 @@
             background-color: #23527c;
         }
 
+        .styled-button{
+            display: inline-block;
+            background-color: #4CAF50;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 4px;
+            text-decoration: none;
+        }
+
+        .styled-button:hover{
+            background-color: #46a049;
+        }
+
         #assignMembers option[selected] {
             background-color: blue;
             color: white;
@@ -119,7 +132,7 @@
                 <c:forEach items="${membersList}" var="member">
                     <c:choose>
                         <c:when test="${selectedMemberIds.contains(member.getId())}">
-                            <option value="${member.getId()}" selected disabled>${member.getUserName()}</option>
+                            <option value="${member.getId()}" selected disabled>${member.getUsername()}</option>
                         </c:when>
                         <c:otherwise>
                             <option value="${member.getId()}">${member.getUsername()}</option>
@@ -131,7 +144,9 @@
         <div class="form-group">
             <input type="submit" value="Save Changes">
         </div>
+
     </form>
+    <span><a href="/api/v1/projects/view/${project.id}" class="styled-button">Back</a></span>
 </div>
 </body>
 </html>

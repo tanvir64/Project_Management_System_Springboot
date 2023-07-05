@@ -31,11 +31,11 @@ public class ReportService {
             projectDTO.setProjectStatus(project.getProjectStatus());
             projectDTO.setProjectStartDateTime(project.getProjectStartDateTime());
             projectDTO.setProjectEndDateTime(project.getProjectEndDateTime());
-            projectDTO.setProjectOwnerName(project.getProjectOwner().getUsername());
+            projectDTO.setProjectOwnerName("Tamvir");
             projectDTOs.add(projectDTO);
         }
         // load file and compile it
-        String filePath = "D:\\Spring boot\\Report";
+        String filePath = "C:\\Users\\User\\Desktop\\Report";
         File file = ResourceUtils.getFile("classpath:AllProjects.jrxml");
         JasperReport jasperReport = JasperCompileManager.compileReport(file.getAbsolutePath());
         JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(projectDTOs);

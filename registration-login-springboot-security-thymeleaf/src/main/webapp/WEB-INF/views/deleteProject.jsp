@@ -83,6 +83,20 @@
         .delete-button:hover {
             background-color: #ff1a1a;
         }
+
+        .styled-button{
+            display: inline-block;
+            background-color: #4CAF50;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 4px;
+            text-decoration: none;
+        }
+
+        .styled-button:hover{
+            background-color: #46a049;
+        }
+
     </style>
     <script>
         function confirmDelete() {
@@ -121,6 +135,7 @@
             <input type="submit" value="Delete Project" class="delete-button" onclick="return confirmDelete()">
         </div>
     </form>
+    <span><a href="/api/v1/projects/view/${project.id}" class="styled-button">Back</a></span>
 </div>
 </body>
 </html>

@@ -1,6 +1,7 @@
 package com.example.registrationlogindemo.service;
 
 import com.example.registrationlogindemo.entity.Project;
+import com.example.registrationlogindemo.exception.RecordNotFoundException;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -10,7 +11,7 @@ public interface ProjectService {
 
     Project getProjectByUserId(Long id);
 
-    void updateProject(Project project, List<Long> selectedMemberIds);
+    void updateProject(Long id,Project project, List<Long> selectedMemberIds) throws RecordNotFoundException;
 
     boolean addMemberToProject(Project project,List<Long> selectedMemberIds);
 
