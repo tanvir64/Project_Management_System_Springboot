@@ -134,8 +134,24 @@
     </tr>
     <tr class="table-row">
         <th>Status:</th>
-        <td>${project.getProjectStatus()}</td>
+        <td>
+            <c:choose>
+                <c:when test="${project.getProjectStatus() == 0}">
+                    PLANNING
+                </c:when>
+                <c:when test="${project.getProjectStatus() == 1}">
+                    STARTED
+                </c:when>
+                <c:when test="${project.getProjectStatus() == 3}">
+                    ENDED
+                </c:when>
+                <c:otherwise>
+                    UNKNOWN <!-- Handle other status values if needed -->
+                </c:otherwise>
+            </c:choose>
+        </td>
     </tr>
+
     <tr class="table-row">
         <th>Start Date:</th>
         <td>${project.getProjectStartDateTime()}</td>

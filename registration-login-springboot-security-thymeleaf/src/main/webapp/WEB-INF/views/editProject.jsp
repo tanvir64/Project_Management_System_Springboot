@@ -111,36 +111,55 @@
         </div>
         <div class="form-group">
             <label for="projectStartDateTime">Start Date:</label>
-            <input type="date" id="projectStartDateTime" name="projectStartDateTime" value="${project.getProjectStartDateTime()}" required>
-        </div>
-        <div class="form-group">
-            <label for="projectEndDateTime">End Date:</label>
-            <input type="date" id="projectEndDateTime" name="projectEndDateTime" value="${project.getProjectEndDateTime()}" required>
-        </div>
-        <div class="form-group">
-            <label for="projectOwner">Owner:</label>
-            <input type="text" id="projectOwner" name="projectOwner" value="${project.getProjectOwner().getUserName()}" readonly>
-        </div>
-        <div class="form-group">
-            <label for="projectStatus">Status:</label>
-            <input type="text" id="projectStatus" name="projectStatus" value="${project.getProjectStatus()}" readonly>
+            <input type="date" id="projectStartDateTime" name="projectStartDateTime"
+                   value="${project.getProjectStartDateTime()}"
+            <c:if test="${project.getProjectStatus() == 1 || project.getProjectStatus() == 3}">
+                   readonly
+            </c:if>
+            >
         </div>
 
         <div class="form-group">
-            <label for="assignMembers">Assign Members:</label>
+            <label for="projectEndDateTime">End Date:</label>
+            <input type="date" id="projectEndDateTime" name="projectEndDateTime"
+                   value="${project.getProjectEndDateTime()}"
+            <c:if test="${project.getProjectStatus() == 3}">
+                   readonly
+            </c:if>
+            >
+        </div>
+        <div class="form-group">
+            <label for="projectStatus">Status:</label>
+            <input type="text" id="projectStatus" name="projectStatus" value="<c:choose>
+            <c:when test="${project.getProjectStatus() == 0}">PLANNING</c:when>
+            <c:when test="${project.getProjectStatus() == 1}">STARTED</c:when>
+            <c:when test="${project.getProjectStatus() == 3}">ENDED</c:when>
+            <c:otherwise>UNKNOWN</c:otherwise> <!-- Handle other status values if needed -->
+            </c:choose>" readonly>
+        </div>
+
+        <div class="form-group">
+            <label for="assignMembers">Add Members:</label>
             <select id="assignMembers" name="assignMembers" multiple>
                 <c:forEach items="${membersList}" var="member">
-                    <c:choose>
-                        <c:when test="${selectedMemberIds.contains(member.getId())}">
-                            <option value="${member.getId()}" selected disabled>${member.getUsername()}</option>
-                        </c:when>
-                        <c:otherwise>
-                            <option value="${member.getId()}">${member.getUsername()}</option>
-                        </c:otherwise>
-                    </c:choose>
+                    <c:if test="${!selectedMemberIds.contains(member.getId())}">
+                        <option value="${member.getId()}">${member.getUsername()}</option>
+                    </c:if>
                 </c:forEach>
             </select>
         </div>
+
+        <div class="form-group">
+            <label for="removeMembers">Remove Members:</label>
+            <select id="removeMembers" name="removeMembers" multiple>
+                <c:forEach items="${membersList}" var="member">
+                    <c:if test="${selectedMemberIds.contains(member.getId())}">
+                        <option value="${member.getId()}">${member.getUsername()}</option>
+                    </c:if>
+                </c:forEach>
+            </select>
+        </div>
+
         <div class="form-group">
             <input type="submit" value="Save Changes">
         </div>

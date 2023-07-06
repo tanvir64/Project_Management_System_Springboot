@@ -105,4 +105,14 @@ public class UserController {
         model.addAttribute("users", users);
         return "users";
     }
+
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        SecurityContextHolder.clearContext();
+        if(session != null) {
+            session.invalidate();
+        }
+        return "redirect:/login";
+    }
 }

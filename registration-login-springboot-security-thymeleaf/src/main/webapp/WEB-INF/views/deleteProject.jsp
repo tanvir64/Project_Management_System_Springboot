@@ -126,6 +126,15 @@
             <input type="text" id="projectEndDateTime" name="projectEndDateTime" value="${project.getProjectEndDateTime()}" readonly>
         </div>
         <div class="form-group">
+            <label for="projectStatus">Status:</label>
+            <input type="text" id="projectStatus" name="projectStatus" value="<c:choose>
+            <c:when test="${project.getProjectStatus() == 0}">PLANNING</c:when>
+            <c:when test="${project.getProjectStatus() == 1}">STARTED</c:when>
+            <c:when test="${project.getProjectStatus() == 3}">ENDED</c:when>
+            <c:otherwise>UNKNOWN</c:otherwise> <!-- Handle other status values if needed -->
+            </c:choose>" readonly>
+        </div>
+        <div class="form-group">
             <label>Assigned Members:</label>
                 <c:forEach items="${membersList}" var="member">
                     <option value="${member.getId()}">${member.getUsername()}</option>

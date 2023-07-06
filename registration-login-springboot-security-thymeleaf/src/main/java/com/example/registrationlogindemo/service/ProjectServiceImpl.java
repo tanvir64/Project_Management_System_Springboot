@@ -5,6 +5,8 @@ import com.example.registrationlogindemo.entity.User;
 import com.example.registrationlogindemo.exception.RecordNotFoundException;
 import com.example.registrationlogindemo.repository.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -34,10 +36,10 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public boolean addMemberToProject(Project project, List<Long> selectedMemberIds) {
+    public void addMemberToProject(Project project, List<Long> selectedMemberIds) {
         System.out.println("id: "+project.getId());
         if(selectedMemberIds == null){
-            return false;
+            return;
         }
         for (Long userId : selectedMemberIds) {
             User member = null;
@@ -49,11 +51,28 @@ public class ProjectServiceImpl implements ProjectService {
             member.getProjects().add(project);
         }
         System.out.println("member added to project");
-        return true;
     }
 
     @Override
-    public void updateProject(Long id, Project project, List<Long> selectedMemberIds) throws RecordNotFoundException {
+    public void deleteMemberFromProject(Project project, List<Long> removedMemberIds) {
+        if(removedMemberIds == null){
+            return;
+        }
+        for (Long userId : removedMemberIds) {
+            User member = null;
+            member = userService.getUserById(userId).get();
+            if(!project.getUsers().contains(member)){
+                continue;
+            }
+            project.getUsers().remove(member);
+            member.getProjects().remove(project);
+        }
+        System.out.println("member removed from project");
+    }
+
+    @Override
+    public void updateProject(Long id, Project project, List<Long> selectedMemberIds, List<Long> removedMemberIds) throws RecordNotFoundException {
+
         Project projectToUpdate = projectRepository.findById(id)
                 .orElseThrow(() -> new RecordNotFoundException("Project not found"));
         projectToUpdate.setProjectName(project.getProjectName());
@@ -61,9 +80,15 @@ public class ProjectServiceImpl implements ProjectService {
         projectToUpdate.setProjectStartDateTime(project.getProjectStartDateTime());
         projectToUpdate.setProjectEndDateTime(project.getProjectEndDateTime());
         projectToUpdate.setProjectStatus(project.getProjectStatus());
-        projectToUpdate.setProjectOwner(project.getProjectOwner());
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        System.out.println("name: "+authentication.getName());
+        User user = userService.findByUsername(authentication.getName());
+//        System.out.println("user: "+user.getUsername());
+        projectToUpdate.setProjectOwner(user);
+//        System.out.println("project owner: "+projectToUpdate.getProjectOwner().getUsername());
         addMemberToProject(projectToUpdate, selectedMemberIds);
-        projectRepository.save(project);
+        deleteMemberFromProject(projectToUpdate, removedMemberIds);
+        projectRepository.save(projectToUpdate);
     }
 
     @Override

@@ -11,9 +11,11 @@ public interface ProjectService {
 
     Project getProjectByUserId(Long id);
 
-    void updateProject(Long id,Project project, List<Long> selectedMemberIds) throws RecordNotFoundException;
+    void updateProject(Long id,Project project, List<Long> selectedMemberIds, List<Long> removedMemberIds) throws RecordNotFoundException;
 
-    boolean addMemberToProject(Project project,List<Long> selectedMemberIds);
+    void addMemberToProject(Project project, List<Long> selectedMemberIds);
+
+    void deleteMemberFromProject(Project project, List<Long> removedMemberIds);
 
     void deleteProject(Long id);
 

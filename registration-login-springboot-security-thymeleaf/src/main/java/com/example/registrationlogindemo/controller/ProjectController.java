@@ -59,6 +59,11 @@ public class ProjectController {
     //    get all projects for the current month
     @GetMapping("/api/v1/projectsList")
     public String showProjectList(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findByUsername(authentication.getName());
+        if(user == null) {
+            return "redirect:/login";
+        }
         List<Project> projects = projectService.getProjectsForCurrentMonth();
 //        List<Project> projects = projectService.getAllProjects();
         model.addAttribute("projects", projects);
@@ -70,6 +75,11 @@ public class ProjectController {
     public String showFilteredProjectsList(Model model,
                                            @RequestParam("projectStartDateTime") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate projectStartDateTime,
                                            @RequestParam("projectEndDateTime") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate projectEndDateTime) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findByUsername(authentication.getName());
+        if(user == null) {
+            return "redirect:/login";
+        }
         List<Project> projects = projectService.getFilteredProjects(projectStartDateTime, projectEndDateTime);
         model.addAttribute("projects", projects);
         return "projectList";
@@ -80,8 +90,12 @@ public class ProjectController {
     public String showProjectDetails(@PathVariable("id") Long id, Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findByUsername(authentication.getName());
+        if(user == null) {
+            return "redirect:/login";
+        }
         model.addAttribute("user", user);
         Project project = projectService.getProjectById(id);
+        System.out.println(project.getProjectOwner().getUsername());
         model.addAttribute("project", project);
         model.addAttribute("userList", project.getUsers());
         return "projectDetails";
@@ -90,6 +104,11 @@ public class ProjectController {
     //    create a new project
     @GetMapping("/api/v1/create-project")
     public String showCreateProjectForm(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findByUsername(authentication.getName());
+        if(user == null) {
+            return "redirect:/login";
+        }
         model.addAttribute("project", new Project());
         model.addAttribute("membersList", userService.getAllUsers());
         return "createProject";
@@ -128,6 +147,11 @@ public class ProjectController {
     //    edit a project
     @GetMapping("/api/v1/projects/edit/{id}")
     public String showEditProjectForm(@PathVariable("id") Long id, Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findByUsername(authentication.getName());
+        if(user == null) {
+            return "redirect:/login";
+        }
         System.out.println("id: " + id);
         Project project = projectService.getProjectById(id);
         model.addAttribute("project", project);
@@ -138,7 +162,7 @@ public class ProjectController {
     }
 
     @PostMapping("/api/v1/projects/edit/{id}")
-    public String editProject(@PathVariable("id") Long id, @ModelAttribute("project") Project project,Model model,@RequestParam(value = "assignMembers",required = false) List<Long> selectedMemberIds) throws RecordNotFoundException {
+    public String editProject(@PathVariable("id") Long id, @ModelAttribute("project") Project project,Model model,@RequestParam(value = "assignMembers",required = false) List<Long> selectedMemberIds, @RequestParam(value = "removeMembers", required = false) List<Long> removedMemberIds) throws RecordNotFoundException {
         LocalDate current_date = LocalDate.now();
         if(project.getProjectStartDateTime().isAfter(current_date)){
             project.setProjectStatus(0);
@@ -149,13 +173,19 @@ public class ProjectController {
         else{
             project.setProjectStatus(1);
         }
-        projectService.updateProject(id,project,selectedMemberIds);
+//        System.out.println(project.getProjectOwner().getUsername());
+        projectService.updateProject(id,project,selectedMemberIds,removedMemberIds);
 //        model.addAttribute("projects", projectService.getAllProjects());
         return "redirect:/api/v1/projectsList";
     }
 
     @GetMapping("/api/v1/projects/delete/{id}")
     public String deleteProject(@PathVariable("id") Long id, Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findByUsername(authentication.getName());
+        if(user == null) {
+            return "redirect:/login";
+        }
         Project project = projectService.getProjectById(id);
         model.addAttribute("project", project);
         model.addAttribute("membersList", project.getUsers());
@@ -164,8 +194,12 @@ public class ProjectController {
 
     @PostMapping("/api/v1/projects/delete/{id}")
     public String deleteProject(@PathVariable("id") Long id, @ModelAttribute("project") Project project, Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findByUsername(authentication.getName());
+        if(user == null) {
+            return "redirect:/login";
+        }
         projectService.deleteProject(id);
-//        model.addAttribute("projects", projectService.getAllProjects());
         return "redirect:/api/v1/projectsList";
     }
 
@@ -173,6 +207,11 @@ public class ProjectController {
     @GetMapping("/api/v1/report/{format}")
     @ResponseBody
     public String generateReport(@PathVariable String format) throws JRException, FileNotFoundException {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findByUsername(authentication.getName());
+        if(user == null) {
+            return "redirect:/login";
+        }
         return reportService.exportReport(format);
     }
 }
