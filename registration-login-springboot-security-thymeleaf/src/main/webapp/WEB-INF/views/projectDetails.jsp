@@ -135,20 +135,7 @@
     <tr class="table-row">
         <th>Status:</th>
         <td>
-            <c:choose>
-                <c:when test="${project.getProjectStatus() == 0}">
-                    PLANNING
-                </c:when>
-                <c:when test="${project.getProjectStatus() == 1}">
-                    STARTED
-                </c:when>
-                <c:when test="${project.getProjectStatus() == 3}">
-                    ENDED
-                </c:when>
-                <c:otherwise>
-                    UNKNOWN <!-- Handle other status values if needed -->
-                </c:otherwise>
-            </c:choose>
+            ${project.getProjectStatus()}
         </td>
     </tr>
 

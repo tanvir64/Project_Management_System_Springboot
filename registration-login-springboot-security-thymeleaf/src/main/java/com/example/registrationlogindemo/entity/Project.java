@@ -30,7 +30,7 @@ public class Project {
 
     @NotNull(message = "Project status cannot be empty")
     @Column(name = "project_status")
-    private int projectStatus;
+    private String projectStatus;
 
     @NotNull(message = "Project start date is required")
     @DateTimeFormat(pattern = "yyyy-MM-dd")

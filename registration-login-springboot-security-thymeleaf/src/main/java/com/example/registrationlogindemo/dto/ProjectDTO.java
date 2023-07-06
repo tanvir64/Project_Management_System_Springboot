@@ -13,7 +13,7 @@ public class ProjectDTO {
     private Long id;
     private String projectName;
     private String projectIntro;
-    private int projectStatus;
+    private String projectStatus;
     private LocalDate projectStartDateTime;
     private LocalDate projectEndDateTime;
     private String projectOwnerName;

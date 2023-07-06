@@ -124,13 +124,13 @@ public class ProjectController {
         }
         LocalDate current_date = LocalDate.now();
         if(project.getProjectStartDateTime().isAfter(current_date)){
-            project.setProjectStatus(0);
+            project.setProjectStatus("PLANNING");
         }
         else if(project.getProjectEndDateTime().isBefore(current_date)){
-            project.setProjectStatus(3);
+            project.setProjectStatus("ENDED");
         }
         else{
-            project.setProjectStatus(1);
+            project.setProjectStatus("STARTED");
         }
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         System.out.println("user: "+authentication.getName());
@@ -165,13 +165,13 @@ public class ProjectController {
     public String editProject(@PathVariable("id") Long id, @ModelAttribute("project") Project project,Model model,@RequestParam(value = "assignMembers",required = false) List<Long> selectedMemberIds, @RequestParam(value = "removeMembers", required = false) List<Long> removedMemberIds) throws RecordNotFoundException {
         LocalDate current_date = LocalDate.now();
         if(project.getProjectStartDateTime().isAfter(current_date)){
-            project.setProjectStatus(0);
+            project.setProjectStatus("PLANNING");
         }
         else if(project.getProjectEndDateTime().isBefore(current_date)){
-            project.setProjectStatus(3);
+            project.setProjectStatus("ENDED");
         }
         else{
-            project.setProjectStatus(1);
+            project.setProjectStatus("STARTED");
         }
 //        System.out.println(project.getProjectOwner().getUsername());
         projectService.updateProject(id,project,selectedMemberIds,removedMemberIds);
