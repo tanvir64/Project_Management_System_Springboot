@@ -26,7 +26,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void registerUser(UserDto userDto) {
         User user = new User();
-        user.setUsername(userDto.getFirstName() + " " + userDto.getLastName());
+//        user.setUsername(userDto.getFirstName() + " " + userDto.getLastName());
         user.setUsername(userDto.getUserName());
         user.setEmail(userDto.getEmail());
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
@@ -55,6 +55,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
+
+    @Override
     public User getUser(String userName) {
         User user = userRepository.findByUsername(userName);
 
@@ -71,11 +76,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean login(String email, String password) {
-        User user = userRepository.findByEmail(email);
+    public boolean login(String name, String password) {
+        System.out.println(name + " " + password);
+        User user = userRepository.findByUsername(name);
         if(user != null){
             System.out.println(user.getPassword() + " " + passwordEncoder.encode(password));
-            return user.getPassword().equals(passwordEncoder.encode(password));
+            return passwordEncoder.matches(password, user.getPassword());
         }
         return false;
     }
@@ -89,11 +95,6 @@ public class UserServiceImpl implements UserService {
         } else {
             return new ArrayList<User>();
         }
-    }
-
-    @Override
-    public User findByName(String userName) {
-        return userRepository.findByUsername(userName);
     }
 
     @Override

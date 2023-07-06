@@ -16,7 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.FileNotFoundException;
 import java.time.LocalDate;
@@ -36,7 +36,6 @@ public class ProjectController {
     private ReportService reportService;
 
 //    get all projects and show them in json format
-
     @GetMapping(value="/api/v1/projects", produces = "application/json")
     @ResponseBody
     public List<ProjectDTO> getProjectList() {
@@ -50,7 +49,7 @@ public class ProjectController {
             projectDTO.setProjectStatus(project.getProjectStatus());
             projectDTO.setProjectStartDateTime(project.getProjectStartDateTime());
             projectDTO.setProjectEndDateTime(project.getProjectEndDateTime());
-            projectDTO.setProjectOwnerName("Tanvir");
+            projectDTO.setProjectOwnerName(project.getProjectOwner().getUsername());
             projectDTOs.add(projectDTO);
         }
         return projectDTOs;
@@ -79,6 +78,9 @@ public class ProjectController {
     //    view a specific project
     @GetMapping("/api/v1/projects/view/{id}")
     public String showProjectDetails(@PathVariable("id") Long id, Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findByUsername(authentication.getName());
+        model.addAttribute("user", user);
         Project project = projectService.getProjectById(id);
         model.addAttribute("project", project);
         model.addAttribute("userList", project.getUsers());
@@ -87,16 +89,15 @@ public class ProjectController {
 
     //    create a new project
     @GetMapping("/api/v1/create-project")
-    public String showCreateProjectForm(Model model,HttpSession session) {
+    public String showCreateProjectForm(Model model) {
         model.addAttribute("project", new Project());
         model.addAttribute("membersList", userService.getAllUsers());
-//        System.out.println(session.getAttribute("user"));
         return "createProject";
     }
 
     //    save the new project and show the updated project list
     @PostMapping("/api/v1/projectList")
-    public String createProject(@ModelAttribute("project") @Valid Project project, Model model, @RequestParam("assignMembers") List<Long> selectedMemberIds, HttpSession session) {
+    public String createProject(@ModelAttribute("project") @Valid Project project, Model model, @RequestParam("assignMembers") List<Long> selectedMemberIds, HttpServletRequest request) {
         System.out.println("project: " + project.getProjectName()+" "+ project.getProjectIntro()+" "+project.getProjectStartDateTime()+" "+project.getProjectEndDateTime());
         if(project.getProjectStartDateTime().isAfter(project.getProjectEndDateTime())){
             model.addAttribute("error", "Start date should be before end date");
@@ -114,7 +115,7 @@ public class ProjectController {
         }
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         System.out.println("user: "+authentication.getName());
-        User user = userService.findByEmail(authentication.getName());
+        User user = userService.findByUsername(authentication.getName());
         project.setProjectOwner(user);
         System.out.println(selectedMemberIds);
         projectService.addMemberToProject(project,selectedMemberIds);

@@ -155,12 +155,12 @@
 
 
 </table>
-<%--<c:if test="${project.getProjectOwner().getUsername() eq currentUser.getUsername()}">--%>
-<%--    <a href="/api/v1/projects/edit/${project.getId()}" class="edit-project-button">Edit</a>--%>
-<%--    <a href="/api/v1/projects/delete/${project.getId()}" class="delete-project-button">Delete</a>--%>
-<%--</c:if>--%>
-<a href="/api/v1/projects/edit/${project.getId()}" class="edit-project-button">Edit</a>
-<a href="/api/v1/projects/delete/${project.getId()}" class="delete-project-button">Delete</a>
+<c:if test="${project.getProjectOwner().getUsername() eq user.getUsername()}">
+    <a href="/api/v1/projects/edit/${project.getId()}" class="edit-project-button">Edit</a>
+    <a href="/api/v1/projects/delete/${project.getId()}" class="delete-project-button">Delete</a>
+</c:if>
+<%--<a href="/api/v1/projects/edit/${project.getId()}" class="edit-project-button">Edit</a>--%>
+<%--<a href="/api/v1/projects/delete/${project.getId()}" class="delete-project-button">Delete</a>--%>
 <a href="/api/v1/projectsList" class="styled-button">Back</a>
 
 </body>

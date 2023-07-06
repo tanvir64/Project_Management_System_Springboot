@@ -33,13 +33,13 @@ public class UserController {
     }
 
 
-    @GetMapping("/api/v1/login")
+    @GetMapping("/login")
     public String loginForm() {
         return "login";
     }
 
     // handler method to handle user registration request
-    @GetMapping("/api/v1/register")
+    @GetMapping("/register")
     public String showRegistrationForm(Model model){
         UserDto user = new UserDto();
         model.addAttribute("user", user);
@@ -47,7 +47,7 @@ public class UserController {
     }
 
     // handler method to handle register user form submit request
-    @PostMapping("/api/v1/register")
+    @PostMapping("/register")
     public String registerUser(@Valid @ModelAttribute("user") UserDto user,
                                BindingResult result,
                                Model model){
@@ -75,25 +75,8 @@ public class UserController {
         }
         model.addAttribute("success", "User created successfully");
         userService.registerUser(user);
-        return "redirect:/api/v1/login";
+        return "redirect:/login";
     }
-
-//    @PostMapping("/api/v1/login")
-//    public String login(Model model, @RequestParam("username") String username, @RequestParam("password") String password, HttpSession session) {
-////        return "redirect:/api/v1/projectsList";
-//        System.out.println("username = " + username + "password" + password);
-//        if(userService.login(username, password)) {
-//            User user = userService.findByEmail(username);
-//            System.out.println("user = " + username + "password" + password);
-//            session.setAttribute("user", user);
-//            model.addAttribute("success", "Logged in successfully!!");
-//            return "redirect:/api/v1/projectsList";
-//        }
-//        else {
-//            model.addAttribute("error", "Invalid email or password");
-//            return "login";
-//        }
-//    }
 
     @PostMapping("/")
     public String home(Model model, @RequestParam("username") String username, @RequestParam("password") String password){
@@ -101,29 +84,25 @@ public class UserController {
         User user = userService.findByEmail(username);
         System.out.println("user = " + username + "password" + password);
 
-        return "redirect:/api/v1/projectsList";
-//        if(userService.login(username, password)) {
-//
-//            System.out.println("user = " + username + "password" + password);
-//            session.setAttribute("user", user);
-//            model.addAttribute("success", "Logged in successfully!!");
-//            return "redirect:/api/v1/projectsList";
-//        }
-//        else {
-//            model.addAttribute("error", "Invalid email or password");
-//            return "login";
-//        }
+        if(userService.login(username, password)) {
+            Authentication authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
+
+            // Set the authentication token in the security context
+            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+            System.out.println("user = " + username + "password" + password);
+            model.addAttribute("success", "Logged in successfully!!");
+            return "redirect:/api/v1/projectsList";
+        }
+        else {
+            model.addAttribute("error", "Invalid email or password");
+            return "redirect:/login";
+        }
     }
 
-    @GetMapping("/api/v1/users")
+    @GetMapping("/users")
     public String listRegisteredUsers(Model model){
-        List<UserDto> users = userService.findAllUsers();
+        List<User> users = userService.getAllUsers();
         model.addAttribute("users", users);
         return "users";
-    }
-
-    @GetMapping("/api/v1/logout")
-    public String logout() {
-        return "redirect:/api/v1/login";
     }
 }

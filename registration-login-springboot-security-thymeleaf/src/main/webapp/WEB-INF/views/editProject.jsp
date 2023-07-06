@@ -117,10 +117,10 @@
             <label for="projectEndDateTime">End Date:</label>
             <input type="date" id="projectEndDateTime" name="projectEndDateTime" value="${project.getProjectEndDateTime()}" required>
         </div>
-<%--        <div class="form-group">--%>
-<%--            <label for="projectOwner">Owner:</label>--%>
-<%--            <input type="text" id="projectOwner" name="projectOwner" value="${project.getProjectOwner().getUserName()}" readonly>--%>
-<%--        </div>--%>
+        <div class="form-group">
+            <label for="projectOwner">Owner:</label>
+            <input type="text" id="projectOwner" name="projectOwner" value="${project.getProjectOwner().getUserName()}" readonly>
+        </div>
         <div class="form-group">
             <label for="projectStatus">Status:</label>
             <input type="text" id="projectStatus" name="projectStatus" value="${project.getProjectStatus()}" readonly>

@@ -3,6 +3,9 @@
 <html>
 <head>
     <title>Project List</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+          crossorigin="anonymous">
     <style>
         /* CSS for responsive and beautiful UI */
         body {
@@ -230,6 +233,25 @@
     </script>
 </head>
 <body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Project Management System</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/register">Register</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/logout">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
 <div class="container">
     <c:if test="${not empty error}">
         <div id="error-message" class="error-message">${error}</div>
@@ -242,13 +264,10 @@
 <div class="create-project-container">
     <a href="/api/v1/create-project" class="create-project-button">Create Project</a>
 </div>
-<div class="logout-container">
-    <a href="/api/v1/logout" class="logout-button">Logout</a>
-</div>
 <form action="/api/v1/projectsList/filter" method="GET">
     <div class="datepicker-container">
-        <input type="date" id="projectStartDateTime" class="datepicker-input" name="projectStartDateTime">
-        <input type="date" id="projectEndDateTime" class="datepicker-input" name="projectEndDateTime">
+        <input type="date" id="projectStartDateTime" class="datepicker-input" name="projectStartDateTime" required>
+        <input type="date" id="projectEndDateTime" class="datepicker-input" name="projectEndDateTime" required>
         <button type="submit" id="filterProjectsButton" class="filter-button" name="filterButton">Filter</button>
     </div>
 </form>

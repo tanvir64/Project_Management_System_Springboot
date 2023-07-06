@@ -6,8 +6,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -31,10 +29,10 @@ public class SpringSecurity {
         http.csrf().disable()
                 .authorizeHttpRequests((authorize) ->
                         authorize
-                                .antMatchers("/api/v1/register/**").permitAll()
-                                .antMatchers("/api/v1/users**").permitAll()
+                                .antMatchers("/register/**").permitAll()
+                                .antMatchers("/users**").permitAll()
                                 .antMatchers("/api/v1/projects").permitAll()
-
+//                                .anyRequest().authenticated()
 //                                .antMatchers("/api/v1/projectsList").authenticated()  // Limit access to "/api/v1/projectsList" to authenticated users
 //                                .antMatchers("/api/v1/projects/view/{id}").authenticated()  // Limit access to "/api/v1/projects/view/{id}" to authenticated users
 //                                .antMatchers("/api/v1/projects/edit/{id}").authenticated()
@@ -43,8 +41,8 @@ public class SpringSecurity {
 //                                .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
-                        .loginPage("/api/v1/login")
-                        .loginProcessingUrl("/api/v1/login")
+                        .loginPage("/login")
+                        .loginProcessingUrl("/login")
                         .permitAll()
 //                        .successHandler((request, response, authentication) -> {
 //                            // Customize the redirect URLs based on your logic
@@ -61,8 +59,8 @@ public class SpringSecurity {
                         logout -> logout
                                 .invalidateHttpSession(true)
                                 .clearAuthentication(true)
-                                .logoutRequestMatcher(new AntPathRequestMatcher("/api/v1/logout"))
-                                .logoutSuccessUrl("/api/v1/login")
+                                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                                .logoutSuccessUrl("/login")
                                 .permitAll()
 
                 );
