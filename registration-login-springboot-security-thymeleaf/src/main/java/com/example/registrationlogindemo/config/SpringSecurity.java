@@ -29,38 +29,21 @@ public class SpringSecurity {
         http.csrf().disable()
                 .authorizeHttpRequests((authorize) ->
                         authorize
-                                .antMatchers("/register/**").permitAll()
-                                .antMatchers("/users**").permitAll()
+                                .antMatchers("/api/v1/register/**").permitAll()
+                                .antMatchers("/api/v1/users**").permitAll()
                                 .antMatchers("/api/v1/projects").permitAll()
-//                                .anyRequest().authenticated()
-//                                .antMatchers("/api/v1/projectsList").authenticated()  // Limit access to "/api/v1/projectsList" to authenticated users
-//                                .antMatchers("/api/v1/projects/view/{id}").authenticated()  // Limit access to "/api/v1/projects/view/{id}" to authenticated users
-//                                .antMatchers("/api/v1/projects/edit/{id}").authenticated()
-//                                .antMatchers("/api/v1/projects/delete/{id}").authenticated()
-//                                .antMatchers("/api/v1/report/{format}").authenticated()
-//                                .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
-                        .loginPage("/login")
-                        .loginProcessingUrl("/login")
+                        .loginPage("/api/v1/login")
+                        .loginProcessingUrl("/api/v1/login")
                         .permitAll()
-//                        .successHandler((request, response, authentication) -> {
-//                            // Customize the redirect URLs based on your logic
-//                            if (authentication.isAuthenticated()) {
-//                                response.sendRedirect("/api/v1/admin");
-//                            } else if (authentication.isAuthenticated()) {
-//                                response.sendRedirect("/api/v1/user");
-//                            } else {
-//                                response.sendRedirect("/api/v1/default");
-//                            }
-//                        })
                 )
                 .logout(
                         logout -> logout
                                 .invalidateHttpSession(true)
                                 .clearAuthentication(true)
-                                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                                .logoutSuccessUrl("/login")
+                                .logoutRequestMatcher(new AntPathRequestMatcher("/api/v1/logout"))
+                                .logoutSuccessUrl("/api/v1/login")
                                 .permitAll()
 
                 );

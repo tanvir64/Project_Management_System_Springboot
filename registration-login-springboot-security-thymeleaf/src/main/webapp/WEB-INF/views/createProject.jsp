@@ -117,11 +117,11 @@
         </div>
         <div class="form-group">
             <label for="projectStartDateTime">Start Date:</label>
-            <input type="date" id="projectStartDateTime" name="projectStartDateTime" required>
+            <input type="date" id="projectStartDateTime" name="projectStartDateTime">
         </div>
         <div class="form-group">
             <label for="projectEndDateTime">End Date:</label>
-            <input type="date" id="projectEndDateTime" name="projectEndDateTime" required>
+            <input type="date" id="projectEndDateTime" name="projectEndDateTime">
         </div>
         <div class="form-group">
             <label for="assignMembers">Assign Members:</label>

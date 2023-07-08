@@ -33,13 +33,13 @@ public class UserController {
     }
 
 
-    @GetMapping("/login")
+    @GetMapping("/api/v1/login")
     public String loginForm() {
         return "login";
     }
 
     // handler method to handle user registration request
-    @GetMapping("/register")
+    @GetMapping("/api/v1/register")
     public String showRegistrationForm(Model model){
         UserDto user = new UserDto();
         model.addAttribute("user", user);
@@ -47,7 +47,7 @@ public class UserController {
     }
 
     // handler method to handle register user form submit request
-    @PostMapping("/register")
+    @PostMapping("/api/v1/register")
     public String registerUser(@Valid @ModelAttribute("user") UserDto user,
                                BindingResult result,
                                Model model){
@@ -75,7 +75,7 @@ public class UserController {
         }
         model.addAttribute("success", "User created successfully");
         userService.registerUser(user);
-        return "redirect:/login";
+        return "redirect:/api/v1/login";
     }
 
     @PostMapping("/")
@@ -95,24 +95,24 @@ public class UserController {
         }
         else {
             model.addAttribute("error", "Invalid email or password");
-            return "redirect:/login";
+            return "redirect:/api/v1/login";
         }
     }
 
-    @GetMapping("/users")
+    @GetMapping("/api/v1/users")
     public String listRegisteredUsers(Model model){
         List<User> users = userService.getAllUsers();
         model.addAttribute("users", users);
         return "users";
     }
 
-    @GetMapping("/logout")
+    @GetMapping("/api/v1/logout")
     public String logout(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         SecurityContextHolder.clearContext();
         if(session != null) {
             session.invalidate();
         }
-        return "redirect:/login";
+        return "redirect:/api/v1/login";
     }
 }

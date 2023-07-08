@@ -10,6 +10,7 @@ import org.springframework.util.ResourceUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,8 +21,9 @@ public class ReportService {
     @Autowired
     private ProjectService projectService;
 
-    public String exportReport(String reportFormat) throws FileNotFoundException, JRException {
-        List<Project> projects = projectService.getAllProjects();
+    public Boolean exportReport(String reportFormat, LocalDate projectStartDateTime, LocalDate projectEndDateTime) throws FileNotFoundException, JRException {
+        List<Project> projects = projectService.getFilteredProjects(projectStartDateTime,projectEndDateTime);
+        Boolean created = false;
         List<ProjectDTO> projectDTOs = new ArrayList<>();
         for (Project project : projects) {
             ProjectDTO projectDTO = new ProjectDTO();
@@ -31,7 +33,7 @@ public class ReportService {
             projectDTO.setProjectStatus(project.getProjectStatus());
             projectDTO.setProjectStartDateTime(project.getProjectStartDateTime());
             projectDTO.setProjectEndDateTime(project.getProjectEndDateTime());
-            projectDTO.setProjectOwnerName("Tamvir");
+            projectDTO.setProjectOwnerName(project.getProjectOwner().getUsername());
             projectDTOs.add(projectDTO);
         }
         // load file and compile it
@@ -41,14 +43,18 @@ public class ReportService {
         JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(projectDTOs);
         Map<String,Object> parameters = new HashMap<>();
         parameters.put("createdBy", "Md. Tanvir Raihan");
+        System.out.println("create korte aschi");
+        System.out.println("reportFormat = " + reportFormat);
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport,parameters,dataSource);
         if(reportFormat.equalsIgnoreCase("html")){
+            created = true;
             JasperExportManager.exportReportToHtmlFile(jasperPrint,filePath+"\\Projects.html");
         }
         if(reportFormat.equalsIgnoreCase("pdf")){
+            created = true;
             JasperExportManager.exportReportToPdfFile(jasperPrint,filePath+"\\Projects.pdf");
-
+            System.out.println("create korsi");
         }
-        return "project report created at "+filePath;
+        return created;
     }
 }

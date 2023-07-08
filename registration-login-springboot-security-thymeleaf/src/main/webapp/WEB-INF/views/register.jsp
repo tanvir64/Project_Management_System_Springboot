@@ -33,7 +33,7 @@
                 <h2 class="text-center">Registration</h2>
             </div>
             <div class="card-body">
-                <form method="post" role="form" action="/register">
+                <form method="post" role="form" action="/api/v1/register">
 <%--                      modelAttribute="user">--%>
 
                     <div class="form-group mb-3">

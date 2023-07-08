@@ -7,7 +7,7 @@
     </field>
     <field name="projectIntro" class="java.lang.String">
     </field>
-    <field name="projectStatus" class="java.lang.Integer">
+    <field name="projectStatus" class="java.lang.String">
     </field>
     <field name="projectStartDateTime" class="java.time.LocalDate">
     </field>
@@ -21,7 +21,7 @@
     <title>
         <band height="72">
             <frame>
-                <reportElement mode="Opaque" x="-20" y="-20" width="595" height="92" backcolor="#006699" uuid="3dcfd0e9-0a66-4969-9662-41ae3c3cc73d"/>
+                <reportElement mode="Opaque" x="-20" y="-20" width="750" height="92" backcolor="#006699" uuid="3dcfd0e9-0a66-4969-9662-41ae3c3cc73d"/>
                 <staticText>
                     <reportElement x="20" y="20" width="375" height="60" forecolor="#FFFFFF" uuid="a77c0471-47dc-4088-8e89-061e04119518"/>
                     <textElement>
@@ -45,7 +45,7 @@
     <columnHeader>
         <band height="21">
             <line>
-                <reportElement x="-20" y="20" width="595" height="1" forecolor="#666666" uuid="5ab55681-a6e4-4f73-ab33-37e592441093"/>
+                <reportElement x="-20" y="20" width="750" height="1" forecolor="#666666" uuid="5ab55681-a6e4-4f73-ab33-37e592441093"/>
             </line>
             <staticText>
                 <reportElement mode="Opaque" x="0" y="0" width="50" height="20" forecolor="#006699" backcolor="#E6E6E6" uuid="37cd4c10-c4ec-425a-9370-044b1e9ec3eb">
@@ -66,7 +66,7 @@
                 <text><![CDATA[ProjectName]]></text>
             </staticText>
             <staticText>
-                <reportElement mode="Opaque" x="150" y="0" width="87" height="20" forecolor="#006699" backcolor="#E6E6E6" uuid="50b68dc3-491e-42e2-9f9b-b0fcbf0163fb">
+                <reportElement mode="Opaque" x="150" y="0" width="100" height="20" forecolor="#006699" backcolor="#E6E6E6" uuid="50b68dc3-491e-42e2-9f9b-b0fcbf0163fb">
                     <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="70f8edc8-afd3-47c6-940a-3eca3f667331"/>
                 </reportElement>
                 <textElement textAlignment="Center">
@@ -75,7 +75,7 @@
                 <text><![CDATA[ProjectIntro]]></text>
             </staticText>
             <staticText>
-                <reportElement mode="Opaque" x="237" y="0" width="79" height="20" forecolor="#006699" backcolor="#E6E6E6" uuid="24aaaac2-4058-472f-9228-04b22d616a6d">
+                <reportElement mode="Opaque" x="250" y="0" width="100" height="20" forecolor="#006699" backcolor="#E6E6E6" uuid="24aaaac2-4058-472f-9228-04b22d616a6d">
                     <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="d643f194-0acd-4dad-b18c-a7214cfd74bc"/>
                 </reportElement>
                 <textElement textAlignment="Center">
@@ -84,7 +84,7 @@
                 <text><![CDATA[ProjectStatus]]></text>
             </staticText>
             <staticText>
-                <reportElement mode="Opaque" x="316" y="0" width="79" height="20" forecolor="#006699" backcolor="#E6E6E6" uuid="67b6602f-37fc-4b5c-a570-6019e0c66764">
+                <reportElement mode="Opaque" x="350" y="0" width="120" height="20" forecolor="#006699" backcolor="#E6E6E6" uuid="67b6602f-37fc-4b5c-a570-6019e0c66764">
                     <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f04b5505-f36d-4377-b860-69e692396f76"/>
                 </reportElement>
                 <textElement textAlignment="Center" verticalAlignment="Middle">
@@ -93,7 +93,7 @@
                 <text><![CDATA[ProjectStartDateTime]]></text>
             </staticText>
             <staticText>
-                <reportElement mode="Opaque" x="395" y="0" width="79" height="20" forecolor="#006699" backcolor="#E6E6E6" uuid="9415a79a-8940-462d-acd8-9d9e91abd785">
+                <reportElement mode="Opaque" x="470" y="0" width="120" height="20" forecolor="#006699" backcolor="#E6E6E6" uuid="9415a79a-8940-462d-acd8-9d9e91abd785">
                     <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="fceec8f8-b075-475b-b45b-a96f1c2df58a"/>
                 </reportElement>
                 <textElement textAlignment="Center">
@@ -102,7 +102,7 @@
                 <text><![CDATA[ProjectEndDateTime]]></text>
             </staticText>
             <staticText>
-                <reportElement mode="Opaque" x="474" y="0" width="96" height="20" forecolor="#006699" backcolor="#E6E6E6" uuid="d495c9d6-84db-447a-89b9-9b10be0b3b14">
+                <reportElement mode="Opaque" x="590" y="0" width="100" height="20" forecolor="#006699" backcolor="#E6E6E6" uuid="d495c9d6-84db-447a-89b9-9b10be0b3b14">
                     <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="edbdf2a2-96ab-46a1-b99b-89658e559218"/>
                 </reportElement>
                 <textElement textAlignment="Center">
@@ -113,12 +113,12 @@
         </band>
     </columnHeader>
     <detail>
-        <band height="20">
+        <band height="21">
             <line>
-                <reportElement positionType="FixRelativeToBottom" x="0" y="19" width="555" height="1" uuid="d27a5d16-0a59-459c-bdaa-1c27cc3e1c73"/>
+                <reportElement positionType="FixRelativeToBottom" x="-20" y="20" width="750" height="1" uuid="d27a5d16-0a59-459c-bdaa-1c27cc3e1c73"/>
             </line>
             <textField textAdjust="StretchHeight">
-                <reportElement x="0" y="0" width="79" height="20" uuid="6fc50c5d-42ec-4cfb-b6ef-bc14cc5f10d9">
+                <reportElement x="0" y="0" width="50" height="20" uuid="6fc50c5d-42ec-4cfb-b6ef-bc14cc5f10d9">
                     <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="99c9882c-d8e8-4173-8401-76e7f2cdaa57"/>
                 </reportElement>
                 <textElement>
@@ -127,7 +127,7 @@
                 <textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
             </textField>
             <textField textAdjust="StretchHeight">
-                <reportElement x="79" y="0" width="79" height="20" uuid="536848c8-8a16-4082-a4f3-ef164fb985ab">
+                <reportElement x="50" y="0" width="100" height="20" uuid="536848c8-8a16-4082-a4f3-ef164fb985ab">
                     <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="30618588-eaa4-4e4a-8aae-7aab9ec7c261"/>
                 </reportElement>
                 <textElement>
@@ -136,7 +136,7 @@
                 <textFieldExpression><![CDATA[$F{projectName}]]></textFieldExpression>
             </textField>
             <textField textAdjust="StretchHeight">
-                <reportElement x="158" y="0" width="79" height="20" uuid="dab1f0f6-8728-434a-bc25-88f2fbadbf8f">
+                <reportElement x="150" y="0" width="100" height="20" uuid="dab1f0f6-8728-434a-bc25-88f2fbadbf8f">
                     <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="70f8edc8-afd3-47c6-940a-3eca3f667331"/>
                 </reportElement>
                 <textElement>
@@ -145,7 +145,7 @@
                 <textFieldExpression><![CDATA[$F{projectIntro}]]></textFieldExpression>
             </textField>
             <textField textAdjust="StretchHeight">
-                <reportElement x="237" y="0" width="79" height="20" uuid="a9f78d73-980d-43a7-ac70-d4fd68ba48c5">
+                <reportElement x="250" y="0" width="100" height="20" uuid="a9f78d73-980d-43a7-ac70-d4fd68ba48c5">
                     <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="d643f194-0acd-4dad-b18c-a7214cfd74bc"/>
                 </reportElement>
                 <textElement>
@@ -154,7 +154,7 @@
                 <textFieldExpression><![CDATA[$F{projectStatus}]]></textFieldExpression>
             </textField>
             <textField textAdjust="StretchHeight">
-                <reportElement x="316" y="0" width="79" height="20" uuid="b4392cc5-3de3-49db-929f-ef36be3481e4">
+                <reportElement x="350" y="0" width="120" height="20" uuid="b4392cc5-3de3-49db-929f-ef36be3481e4">
                     <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f04b5505-f36d-4377-b860-69e692396f76"/>
                 </reportElement>
                 <textElement>
@@ -163,7 +163,7 @@
                 <textFieldExpression><![CDATA[$F{projectStartDateTime}]]></textFieldExpression>
             </textField>
             <textField textAdjust="StretchHeight">
-                <reportElement x="395" y="0" width="79" height="20" uuid="2b75c066-343e-4213-b4ff-5227b3b323bc">
+                <reportElement x="470" y="0" width="120" height="20" uuid="2b75c066-343e-4213-b4ff-5227b3b323bc">
                     <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="fceec8f8-b075-475b-b45b-a96f1c2df58a"/>
                 </reportElement>
                 <textElement>
@@ -172,7 +172,7 @@
                 <textFieldExpression><![CDATA[$F{projectEndDateTime}]]></textFieldExpression>
             </textField>
             <textField textAdjust="StretchHeight">
-                <reportElement x="474" y="0" width="79" height="20" uuid="d1b77485-15e8-46bf-8acd-d7efc4327ccb">
+                <reportElement x="590" y="0" width="100" height="20" uuid="d1b77485-15e8-46bf-8acd-d7efc4327ccb">
                     <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="edbdf2a2-96ab-46a1-b99b-89658e559218"/>
                 </reportElement>
                 <textElement>

@@ -119,15 +119,25 @@
         </div>
         <div class="form-group">
             <label for="projectStartDateTime">Start Date:</label>
-            <input type="text" id="projectStartDateTime" name="projectStartDateTime" value="${project.getProjectStartDateTime()}" readonly>
+            <input type="text" id="projectStartDateTime" name="projectStartDateTime"
+            <c:if test="${project.getProjectStartDateTime() != null}">
+                   value="${project.getProjectStartDateTime()}"
+            </c:if>
+                   readonly>
         </div>
+
         <div class="form-group">
             <label for="projectEndDateTime">End Date:</label>
-            <input type="text" id="projectEndDateTime" name="projectEndDateTime" value="${project.getProjectEndDateTime()}" readonly>
+            <input type="date" id="projectEndDateTime" name="projectEndDateTime"
+            <c:if test="${project.getProjectEndDateTime() != null}">
+                   value="${project.getProjectEndDateTime()}"
+            </c:if>
+                   readonly>
         </div>
+
         <div class="form-group">
             <label for="projectStatus">Status:</label>
-            <input type="text" id="projectStatus" name="projectStatus" value="<c:choose>
+            <input type="date" id="projectStatus" name="projectStatus" value="<c:choose>
             <c:when test="${project.getProjectStatus() == 0}">PLANNING</c:when>
             <c:when test="${project.getProjectStatus() == 1}">STARTED</c:when>
             <c:when test="${project.getProjectStatus() == 3}">ENDED</c:when>

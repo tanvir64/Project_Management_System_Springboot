@@ -162,25 +162,7 @@
             background-color: blue;
         }
 
-        .logout-button {
-            display: inline-block;
-            background-color: red;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 4px;
-            text-decoration: none;
-        }
 
-        .logout-button:hover {
-            background-color: darkred;
-        }
-
-        .logout-container {
-            margin-left: auto;
-            margin-top: 20px;
-            margin-bottom: 20px;
-            text-align: center;
-        }
 
     </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -243,10 +225,10 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="/register">Register</a>
+                    <a class="nav-link active" aria-current="page" href="/api/v1/register">Register</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="/logout">Logout</a>
+                    <a class="nav-link active" aria-current="page" href="/api/v1/logout">Logout</a>
                 </li>
             </ul>
         </div>
@@ -272,25 +254,56 @@
     </div>
 </form>
 
-<table class="project-table">
-    <thead>
-    <tr>
-        <th>Name</th>
-        <th>Intro</th>
-        <th>Actions</th>
-    </tr>
-    </thead>
-    <tbody>
-    <c:forEach items="${projects}" var="project" varStatus="loop">
-        <tr class="${loop.index % 2 == 0 ? 'even' : 'odd'}">
-            <td>${project.getProjectName()}</td>
-            <td>${project.getProjectIntro()}</td>
-            <td>
-                <a href="/api/v1/projects/view/${project.getId()}" class="view-project-button">View Details</a>
-            </td>
+<c:if test="${empty projects}">
+    <div class="no-projects-found">
+        <h2>No Projects Found</h2>
+    </div>
+</c:if>
+<c:if test="${not empty projects}">
+    <table class="project-table">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Intro</th>
+            <th>Actions</th>
         </tr>
-    </c:forEach>
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+        <c:forEach items="${projects}" var="project" varStatus="loop">
+            <tr class="${loop.index % 2 == 0 ? 'even' : 'odd'}">
+                <td>${project.getProjectName()}</td>
+                <td>${project.getProjectIntro()}</td>
+                <td>
+                    <a href="/api/v1/projects/view/${project.getId()}" class="view-project-button">View Details</a>
+                </td>
+            </tr>
+        </c:forEach>
+        </tbody>
+    </table>
+</c:if>
+<div>
+<form id="reportForm" action="/api/v1/generateReport" method="GET">
+    <button type="submit" class="filter-button" name="filterButton">Generate Report</button>
+</form>
+</div>
+<%--<script>--%>
+<%--    document.addEventListener('DOMContentLoaded', function() {--%>
+<%--        var generateReportButton = document.getElementById('generateReportButton');--%>
+<%--        var reportFormatButtons = document.getElementById('reportFormatButtons');--%>
+<%--        var reportForm = document.getElementById('reportForm');--%>
+
+<%--        generateReportButton.addEventListener('click', function() {--%>
+<%--            reportFormatButtons.style.display = 'block';--%>
+<%--        });--%>
+
+<%--        reportForm.addEventListener('submit', function(event) {--%>
+<%--            var selectedFormat = document.querySelector('button.report-format-button:checked').value;--%>
+<%--            var actionPath = "/api/v1/generateReport/" + selectedFormat;--%>
+<%--            console.log(actionPath);--%>
+<%--            reportForm.setAttribute("action", actionPath);--%>
+<%--        });--%>
+<%--    });--%>
+<%--</script>--%>
+
 </body>
 </html>

@@ -65,7 +65,7 @@
                         <div class="mb-3">
                             <button type="submit" class="btn btn-primary">Login</button>
                             <span> Not registered?
-                                <a href="/register"> Register/SignUp Here</a>
+                                <a href="/api/v1/register"> Register/SignUp Here</a>
                             </span>
                         </div>
                     </form>

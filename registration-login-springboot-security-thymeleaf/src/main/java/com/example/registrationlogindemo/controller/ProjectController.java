@@ -10,6 +10,8 @@ import com.example.registrationlogindemo.service.UserService;
 import net.sf.jasperreports.engine.JRException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -62,7 +64,7 @@ public class ProjectController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findByUsername(authentication.getName());
         if(user == null) {
-            return "redirect:/login";
+            return "redirect:/api/v1/login";
         }
         List<Project> projects = projectService.getProjectsForCurrentMonth();
 //        List<Project> projects = projectService.getAllProjects();
@@ -78,7 +80,7 @@ public class ProjectController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findByUsername(authentication.getName());
         if(user == null) {
-            return "redirect:/login";
+            return "redirect:/api/v1/login";
         }
         List<Project> projects = projectService.getFilteredProjects(projectStartDateTime, projectEndDateTime);
         model.addAttribute("projects", projects);
@@ -91,11 +93,11 @@ public class ProjectController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findByUsername(authentication.getName());
         if(user == null) {
-            return "redirect:/login";
+            return "redirect:/api/v1/login";
         }
         model.addAttribute("user", user);
         Project project = projectService.getProjectById(id);
-        System.out.println(project.getProjectOwner().getUsername());
+//        System.out.println(project.getProjectOwner().getUsername());
         model.addAttribute("project", project);
         model.addAttribute("userList", project.getUsers());
         return "projectDetails";
@@ -107,7 +109,7 @@ public class ProjectController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findByUsername(authentication.getName());
         if(user == null) {
-            return "redirect:/login";
+            return "redirect:/api/v1/login";
         }
         model.addAttribute("project", new Project());
         model.addAttribute("membersList", userService.getAllUsers());
@@ -150,7 +152,7 @@ public class ProjectController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findByUsername(authentication.getName());
         if(user == null) {
-            return "redirect:/login";
+            return "redirect:/api/v1/login";
         }
         System.out.println("id: " + id);
         Project project = projectService.getProjectById(id);
@@ -164,7 +166,7 @@ public class ProjectController {
     @PostMapping("/api/v1/projects/edit/{id}")
     public String editProject(@PathVariable("id") Long id, @ModelAttribute("project") Project project,Model model,@RequestParam(value = "assignMembers",required = false) List<Long> selectedMemberIds, @RequestParam(value = "removeMembers", required = false) List<Long> removedMemberIds) throws RecordNotFoundException {
         LocalDate current_date = LocalDate.now();
-        if(project.getProjectStartDateTime().isAfter(current_date)){
+        if(project.getProjectStartDateTime().isAfter(current_date) || project.getProjectStartDateTime()==null){
             project.setProjectStatus("PLANNING");
         }
         else if(project.getProjectEndDateTime().isBefore(current_date)){
@@ -203,15 +205,30 @@ public class ProjectController {
         return "redirect:/api/v1/projectsList";
     }
 
-//        function for generating jasper report
-    @GetMapping("/api/v1/report/{format}")
-    @ResponseBody
-    public String generateReport(@PathVariable String format) throws JRException, FileNotFoundException {
+    @GetMapping("/api/v1/generateReport")
+    public String showGenerateReportForm(Model model){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findByUsername(authentication.getName());
         if(user == null) {
-            return "redirect:/login";
+            return "redirect:/api/v1/login";
         }
-        return reportService.exportReport(format);
+        String format = "pdf";
+        model.addAttribute("format", format);
+        return "generateReport";
+    }
+
+//        function for generating jasper report
+    @PostMapping("/api/v1/generateReport/{format}")
+    @ResponseBody
+    public ResponseEntity<String> generateReport(@PathVariable("format") String format, @RequestParam("startDateTime") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate projectStartDateTime,
+                                                 @RequestParam("endDateTime") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate projectEndDateTime) throws JRException, FileNotFoundException {
+        System.out.println("format: "+format);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findByUsername(authentication.getName());
+        if(user == null) {
+            return new ResponseEntity<>("redirect:/api/v1/login", HttpStatus.NOT_FOUND);
+        }
+        reportService.exportReport(format,projectStartDateTime,projectEndDateTime);
+        return new ResponseEntity<>("Report Generated", HttpStatus.OK);
     }
 }
