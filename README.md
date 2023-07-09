@@ -1,1 +1,1 @@
-# CNS_FINAL
+This is a Project Management System application using Spring Boot, Spring Security, and JSP. The application allows users to manage projects by providing features such as creating, updating, and deleting projects. It includes user authentication and authorization using Spring Security to ensure secure access to the system. The front-end views are implemented using JSP (JavaServer Pages) for dynamic web content rendering.
